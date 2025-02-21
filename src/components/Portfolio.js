@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { motion } from "framer-motion";
 import './portfolio.css';
 import lottie from "lottie-web";
@@ -73,11 +73,11 @@ const Portfolio = () => {
               I'm Praveen Rajak, a passionate Computer Science Engineering student specializing in AI and Machine Learning. I'm also an aspiring Frontend Developer with experience in HTML, CSS, JavaScript, and React.js.
             </motion.p>
           </div>
-          <div className="relative flex justify-center items-center w-1/2" >
+          <div className="relative flex justify-center items-center w-1/2 image-div" >
             {/* <img src={praveen} className="rounded-3xl h-96 w-72 z-10" alt="profile" />
             <div className="absolute bg-white h-96 w-72 rounded-3xl z-20 opacity-40 flex justify-center items-center text-black">
             </div> */}
-            <div className="h-[20rem]" ref={lottieRef}>
+            <div className="h-[20rem] lottie-image" ref={lottieRef}>
 
             </div>
           </div>
