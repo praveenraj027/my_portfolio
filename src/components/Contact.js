@@ -30,7 +30,7 @@ const Contact = () => {
             >
                 Get in Touch
             </motion.h2>
-            
+
             <div className='flex flex-col md:flex-row justify-center items-center gap-10 pt-10'>
                 <div className='w-full md:w-1/2 text-center'>
                     <motion.p
@@ -41,9 +41,9 @@ const Contact = () => {
                     >
                         Feel free to reach out to me through any of the platforms below!
                     </motion.p>
-                    
+
                     <div className="flex justify-center gap-6 text-3xl md:text-4xl mb-8">
-                        {[  
+                        {[
                             { icon: <FaGithub />, link: "https://github.com/praveenraj027" },
                             { icon: <FaLinkedin />, link: "https://linkedin.com/in/praveen-rajak" },
                             { icon: <FaInstagram />, link: "https://instagram.com/praveen_raj027" },
@@ -62,14 +62,14 @@ const Contact = () => {
                             </motion.a>
                         ))}
                     </div>
-                    
+
                     <div className="bg-white p-6 rounded-lg shadow-md text-gray-800 max-w-md mx-auto">
                         <h3 className="text-2xl font-bold mb-2">Want a Stunning Portfolio at just Rs.2999/- ?</h3>
                         <p className="text-lg mb-4">I can create a professional and personalized portfolio website for you! Let's make your online presence stand out.</p>
-                        <button className='bg-gray-900 text-white px-4 py-2 rounded-lg font-bold'>Contact me &rarr;</button>
+                        <a href="https://wa.me/918839244505" target="_blank" rel="noopener noreferrer"><button className='bg-gray-900 text-white px-4 py-2 rounded-lg font-bold'>Contact me &rarr;</button></a>
                     </div>
                 </div>
-                
+
                 <div className='w-full md:w-1/2 px-4 py-8'>
                     <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-lg mx-auto m-h-[20rem]">
                         <input

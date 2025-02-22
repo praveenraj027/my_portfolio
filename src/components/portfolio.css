@@ -126,6 +126,9 @@ h2 {
         padding-bottom: 5rem;
     }
 }
+.skill-name{
+    box-shadow: 0 0 10px rgba(216, 217, 216, 0.8);
+}
 
 /* Skills Responsiveness */
 @media (max-width: 768px) {

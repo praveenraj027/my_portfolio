@@ -68,7 +68,7 @@ const Projects = () => {
                                     View Description
                                 </button>
                                 <button className="bg-gray-600 project-button text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition mt-4 w-40">
-                                    <a href="https://github.com/Team-Vasiliades/SkillSync">View Project</a>
+                                    <a href="/">View Project</a>
                                 </button>
                             </div>
                         </div>
@@ -138,7 +138,7 @@ const Projects = () => {
                                     View Description
                                 </button>
                                 <button className="bg-gray-600 project-button text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition mt-4 w-40">
-                                    <a href="https://github.com/Team-Vasiliades/Artspot">View Project</a>
+                                    <a href="/">View Project</a>
                                 </button>
                             </div>
                         </div>
