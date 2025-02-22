@@ -11,7 +11,7 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        window.location.href = `mailto:praveerajak0506@gmail.com?subject=Message from ${formData.name}&body=${formData.message} (${formData.email})`;
+        window.location.href = `mailto:praveenrajak0506@gmail.com?subject=Message from ${formData.name}&body=${formData.message} (${formData.email})`;
     };
 
     return (
@@ -66,7 +66,7 @@ const Contact = () => {
                     <div className="bg-white p-6 rounded-lg shadow-md text-gray-800 max-w-md mx-auto">
                         <h3 className="text-2xl font-bold mb-2">Want a Stunning Portfolio at just Rs.2999/- ?</h3>
                         <p className="text-lg mb-4">I can create a professional and personalized portfolio website for you! Let's make your online presence stand out.</p>
-                        <a href="https://wa.me/918839244505" target="_blank" rel="noopener noreferrer"><button className='bg-gray-900 text-white px-4 py-2 rounded-lg font-bold'>Contact me &rarr;</button></a>
+                        <a href="https://wa.me/918839244505?text=Hi%20Praveen,%20I'm%20interested%20in%20your%20portfolio%20service!" target="_blank" rel="noopener noreferrer"><button className='bg-gray-900 text-white px-4 py-2 rounded-lg font-bold'>Contact me &rarr;</button></a>
                     </div>
                 </div>
 
