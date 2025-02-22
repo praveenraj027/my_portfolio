@@ -2,7 +2,6 @@ import React, { useEffect} from "react";
 import { motion } from "framer-motion";
 import './portfolio.css';
 import lottie from "lottie-web";
-// import praveen from './praveen.jpg';
 
 const Portfolio = () => {
 
@@ -74,9 +73,6 @@ const Portfolio = () => {
             </motion.p>
           </div>
           <div className="relative flex justify-center items-center w-1/2 image-div" >
-            {/* <img src={praveen} className="rounded-3xl h-96 w-72 z-10" alt="profile" />
-            <div className="absolute bg-white h-96 w-72 rounded-3xl z-20 opacity-40 flex justify-center items-center text-black">
-            </div> */}
             <div className="h-[20rem] lottie-image" ref={lottieRef}>
 
             </div>
