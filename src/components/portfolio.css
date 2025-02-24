@@ -129,6 +129,9 @@ h2 {
 .skill-name{
     box-shadow: 0 0 10px rgba(216, 217, 216, 0.8);
 }
+.skill-name:hover{
+    transform: scale(1.03);
+}
 
 /* Skills Responsiveness */
 @media (max-width: 768px) {

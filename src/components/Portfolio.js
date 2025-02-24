@@ -1,6 +1,7 @@
 import React, { useEffect} from "react";
 import { motion } from "framer-motion";
 import './portfolio.css';
+import resume from './resume.pdf';
 import lottie from "lottie-web";
 
 const Portfolio = () => {
@@ -71,10 +72,12 @@ const Portfolio = () => {
             >
               I'm Praveen Rajak, a passionate Computer Science Engineering student specializing in AI and Machine Learning. I'm also an aspiring Frontend Developer with experience in HTML, CSS, JavaScript, and React.js.
             </motion.p>
+            <div className="pt-12">
+              <button className="h-10 w-40 bg-white text-black font-bold rounded-2xl"><a href={resume} download >Downlaod Resume</a></button>
+            </div>
           </div>
           <div className="relative flex justify-center items-center w-1/2 image-div" >
             <div className="h-[20rem] lottie-image" ref={lottieRef}>
-
             </div>
           </div>
 
