@@ -70,7 +70,7 @@ const Portfolio = () => {
               transition={{ duration: 1, delay: 0.5 }}
               className="text-xl font-serif italic mt-4 text-blue-200 hero-subtitle"
             >
-              I'm Praveen Rajak, a passionate Computer Science Engineering student specializing in AI and Machine Learning. I'm also an aspiring Frontend Developer with experience in HTML, CSS, JavaScript, and React.js.
+              Praveen Rajak, a passionate Computer Science Engineering student specializing in AI and Machine Learning. Also an aspiring Frontend Developer with experience in HTML, CSS, JavaScript, and React.js.
             </motion.p>
             <div className="pt-12">
               <button className="h-10 w-40 bg-white text-black font-bold rounded-2xl hover:bg-gray-300 transition hover:scale-105"><a href={resume} download >Download Resume</a></button>
