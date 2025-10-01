@@ -68,15 +68,6 @@ export function Navigation() {
 
           {/* Theme Toggle & Mobile Menu Button */}
           <div className="flex items-center space-x-2">
-            <Button
-              variant="ghost"
-              className="bg-white/10"
-            >
-              <Link href="/resume.pdf" className="flex items-center">
-                Resume
-                <FileText className="ml-1"/>
-              </Link>
-            </Button>
             <ThemeToggle />
             <div className="md:hidden">
               <Button
