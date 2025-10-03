@@ -12,7 +12,7 @@ const hackathons = [
     description:
       "A web app to visualize data structures and algorithms with interactive controls, animations and real-time performance metrics.",
     outcome: "1st runner up",
-    prize: "₹70,000",
+    prize: "₹7000",
     technologies: ["Django", "Node.js", "MySQL", "TailwindCSS"],
     github: "https://github.com/Team-Vasiliades/ALGOVisualizer",
     demo: "https://algovisualizer.pythonanywhere.com",
