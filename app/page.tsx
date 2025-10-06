@@ -77,7 +77,7 @@ export default function LoadingPage() {
   const handleCommand = () => {
     const command = input.trim().toLowerCase();
 
-    if (command === "run portfolio" || command === "") {
+    if (command === "run portfolio") {
       setHasSubmitted(true);
       setTimeout(() => {
         setFadeOut(true);
