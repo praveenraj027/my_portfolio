@@ -77,7 +77,7 @@ export default function LoadingPage() {
   const handleCommand = () => {
     const command = input.trim().toLowerCase();
 
-    if (command === "run portfolio") {
+    if (command === "run portfolio" || command === "runportfolio") {
       setHasSubmitted(true);
       setTimeout(() => {
         setFadeOut(true);
@@ -143,7 +143,7 @@ export default function LoadingPage() {
                     onKeyDown={handleKeyDown}
                     autoFocus
                     className="absolute inset-0 opacity-0 w-full h-full caret-transparent"
-                    placeholder="run portfolio"
+                    placeholder="runportfolio"
                   />
                 </div>
 
