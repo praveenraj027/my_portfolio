@@ -187,7 +187,7 @@ export default function LoadingPage() {
 
         {stage === "terminal" && !hasSubmitted && (
           <p className="flex flex-wrap text-xs text-gray-500 mt-6 text-center justify-center">
-            Type <span className="text-green-500 mx-1">run portfolio</span> and press Enter
+            Type <span className="text-green-500 mx-1">runportfolio</span> and press Enter
             <span className="sm:hidden">&nbsp;(or tap Run)&nbsp;</span> to continue
           </p>
         )}
