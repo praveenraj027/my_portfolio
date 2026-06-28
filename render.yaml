@@ -1,0 +1,23 @@
+# Render Blueprint — deploy with one click after pushing this repo to GitHub.
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: praveen-portfolio
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false        # set in the Render dashboard (your MongoDB Atlas URI)
+      - key: SESSION_SECRET
+        generateValue: true # Render generates a strong random value
+      - key: ADMIN_ROUTE
+        sync: false        # your secret admin slug, e.g. studio-7f3a91
+      - key: ADMIN_USERNAME
+        sync: false        # only needed while seeding; can be removed after
+      - key: ADMIN_PASSWORD
+        sync: false        # only needed while seeding; can be removed after

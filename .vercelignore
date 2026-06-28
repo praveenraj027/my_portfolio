@@ -1,0 +1,9 @@
+node_modules
+.env
+.env.local
+test
+*.log
+shot-*.png
+test-*.png
+_*.js
+.render-check.json

@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Studio</title>
+<style>
+  :root{--bg:#05070d;--panel:#0b0f18;--line:rgba(255,255,255,.1);--ink:#e8ecf4;--mut:#8a95ab;--cyan:#22d3ee;--mag:#e879f9;--ok:#22e08a;--bad:#ef4444}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:ui-sans-serif,system-ui,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--cyan)}
+  .mono{font-family:ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace}
+  /* login */
+  #login{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;width:100%;max-width:380px}
+  h1{font-size:20px;margin:0 0 4px}
+  .sub{color:var(--mut);font-size:13px;margin:0 0 22px}
+  label{display:block;font-size:12px;color:var(--mut);margin:14px 0 6px;letter-spacing:.02em}
+  input,textarea,select{width:100%;background:#070b13;border:1px solid var(--line);border-radius:10px;color:var(--ink);padding:10px 12px;font-size:14px;font-family:inherit}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--cyan)}
+  textarea{min-height:70px;resize:vertical;line-height:1.5}
+  button{cursor:pointer;font-family:inherit}
+  .btn{background:var(--cyan);color:#05070d;border:none;border-radius:10px;padding:11px 18px;font-weight:600;font-size:14px}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.sm{padding:7px 12px;font-size:12px;border-radius:8px}
+  .err{color:var(--bad);font-size:13px;margin-top:12px;min-height:16px}
+  /* app */
+  #app{display:none;max-width:980px;margin:0 auto;padding:24px 20px 120px}
+  header.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;background:linear-gradient(var(--bg),var(--bg) 70%,transparent);padding:14px 0;z-index:10}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 22px}
+  .tab{background:transparent;border:1px solid var(--line);color:var(--mut);border-radius:20px;padding:7px 14px;font-size:13px}
+  .tab.active{background:var(--cyan);color:#05070d;border-color:var(--cyan);font-weight:600}
+  section.pane{display:none}
+  section.pane.active{display:block}
+  .field{margin-bottom:14px}
+  .field .lbl{font-size:12px;color:var(--mut);margin-bottom:6px;letter-spacing:.02em}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .item{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px;background:rgba(255,255,255,.015)}
+  .item .ihead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+  .item .ihead .t{font-size:12px;color:var(--mag);letter-spacing:.08em}
+  .colorwrap{display:flex;gap:8px;align-items:center}
+  .colorwrap input[type=color]{width:42px;height:38px;padding:2px;flex:0 0 auto}
+  .savebar{position:fixed;left:0;right:0;bottom:0;background:rgba(5,7,13,.92);border-top:1px solid var(--line);padding:12px 20px;display:flex;align-items:center;gap:12px;justify-content:flex-end;backdrop-filter:blur(6px)}
+  .toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:#0b0f18;border:1px solid var(--line);border-radius:10px;padding:10px 16px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:30}
+  .toast.show{opacity:1}
+  .toast.ok{border-color:var(--ok)}.toast.bad{border-color:var(--bad)}
+  .stats{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 18px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:12px 16px;min-width:120px}
+  .stat b{font-size:22px;display:block}.stat span{font-size:11px;color:var(--mut)}
+  .hint{font-size:12px;color:var(--mut);margin:4px 0 0;line-height:1.5}
+  .addbtn{background:transparent;border:1px dashed var(--line);color:var(--cyan);border-radius:10px;padding:9px;width:100%;font-size:13px}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <form class="card" id="loginForm" autocomplete="off">
+    <h1>Studio</h1>
+    <p class="sub">Restricted. Sign in to edit the site.</p>
+    <label for="u">Username</label>
+    <input id="u" name="u" autocomplete="username" autocapitalize="none" spellcheck="false">
+    <label for="p">Password</label>
+    <input id="p" name="p" type="password" autocomplete="current-password">
+    <div style="margin-top:18px"><button class="btn" id="loginBtn" style="width:100%">Sign in</button></div>
+    <div class="err" id="loginErr"></div>
+  </form>
+</div>
+
+<div id="app">
+  <header class="bar">
+    <div><strong>Studio</strong> <span class="mono" style="color:var(--mut);font-size:12px">· editing live site</span></div>
+    <div style="display:flex;gap:8px">
+      <a class="btn ghost sm" href="/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">View site ↗</a>
+      <button class="btn ghost sm" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+  <div class="tabs" id="tabs"></div>
+  <div id="panes"></div>
+</div>
+
+<div class="savebar" id="savebar" style="display:none">
+  <span class="mono" id="dirty" style="color:var(--mut);font-size:12px"></span>
+  <button class="btn ghost sm" id="reloadBtn">Discard changes</button>
+  <button class="btn" id="saveBtn">Save changes</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const ROUTES = ['hero','about','dsa','projects','experience','skills','contact'];
+
+const SCHEMA = {
+  hero: { title:'Hero', fields:[
+    {p:'badge', label:'Badge pill', type:'text'},
+    {p:'eyebrow', label:'Eyebrow line', type:'text'},
+    {p:'nameLine1', label:'Name — line 1', type:'text'},
+    {p:'nameLine2', label:'Name — line 2', type:'text'},
+    {p:'intro', label:'Intro paragraph', type:'textarea'},
+    {p:'ctaPrimary.label', label:'Button 1 — label', type:'text'},
+    {p:'ctaPrimary.route', label:'Button 1 — goes to', type:'select', options:ROUTES},
+    {p:'ctaSecondary.label', label:'Button 2 — label', type:'text'},
+    {p:'ctaSecondary.route', label:'Button 2 — goes to', type:'select', options:ROUTES},
+    {p:'stats', label:'Stat counters', type:'list',
+      title:(it)=>it.label||'stat',
+      newItem:()=>({value:0,suffix:'+',label:'NEW STAT',live:''}),
+      item:[
+        {p:'value', label:'Number', type:'number'},
+        {p:'suffix', label:'Suffix (+, ×, …)', type:'text'},
+        {p:'label', label:'Caption', type:'text'},
+        {p:'live', label:'Auto-fill from live stats', type:'select', options:['','totalSolved','leetcodeRating']}
+      ]}
+  ]},
+  about: { title:'About', fields:[
+    {p:'eyebrow', label:'Eyebrow', type:'text'},
+    {p:'heading', label:'Heading', type:'textarea'},
+    {p:'paragraphs', label:'Paragraphs (HTML <b> allowed)', type:'textlist', newItem:()=>''},
+    {p:'cards', label:'Side stat cards', type:'list',
+      title:(it)=>it.value||'card',
+      newItem:()=>({value:'00', label:'caption', gradient:false}),
+      item:[
+        {p:'value', label:'Big value', type:'text'},
+        {p:'label', label:'Caption', type:'text'},
+        {p:'gradient', label:'Gradient text', type:'checkbox'}
+      ]}
+  ]},
+  dsa: { title:'DSA', fields:[
+    {p:'eyebrow', label:'Eyebrow', type:'text'},
+    {p:'heading', label:'Heading (HTML <br> allowed)', type:'textarea'},
+    {p:'note', label:'Sub-note', type:'text'},
+    {p:'leetcodeUser', label:'LeetCode username', type:'text'},
+    {p:'codeforcesUser', label:'Codeforces handle', type:'text'},
+    {type:'dsalive'}
+  ]},
+  projects: { title:'Projects', fields:[
+    {p:'eyebrow', label:'Eyebrow', type:'text'},
+    {p:'heading', label:'Heading', type:'text'},
+    {p:'featured.tag', label:'Featured — tag', type:'text'},
+    {p:'featured.title', label:'Featured — title', type:'text'},
+    {p:'featured.desc', label:'Featured — description (HTML <b> ok)', type:'textarea'},
+    {p:'featured.url', label:'Featured — link URL', type:'text'},
+    {p:'featured.cta', label:'Featured — link label', type:'text'},
+    {p:'featured.tags', label:'Featured — tech tags (comma-separated)', type:'stringlines'},
+    {p:'items', label:'Other projects', type:'list',
+      title:(it)=>it.title||'project',
+      newItem:()=>({tag:'TAG', title:'New project', desc:'', url:'', tags:[]}),
+      item:[
+        {p:'tag', label:'Tag', type:'text'},
+        {p:'title', label:'Title', type:'text'},
+        {p:'desc', label:'Description (HTML <b> ok)', type:'textarea'},
+        {p:'url', label:'Link URL (optional)', type:'text'},
+        {p:'tags', label:'Tech tags (comma-separated)', type:'stringlines'}
+      ]}
+  ]},
+  experience: { title:'Experience', fields:[
+    {p:'eyebrow', label:'Eyebrow', type:'text'},
+    {p:'heading', label:'Heading', type:'text'},
+    {p:'items', label:'Timeline entries', type:'list',
+      title:(it)=>it.title||'entry',
+      newItem:()=>({badge:'LABEL', color:'#22d3ee', title:'Role — Company', desc:''}),
+      item:[
+        {p:'badge', label:'Badge', type:'text'},
+        {p:'color', label:'Node colour', type:'color'},
+        {p:'title', label:'Title', type:'text'},
+        {p:'desc', label:'Description', type:'textarea'}
+      ]}
+  ]},
+  skills: { title:'Skills', fields:[
+    {p:'eyebrow', label:'Eyebrow', type:'text'},
+    {p:'heading', label:'Heading', type:'text'},
+    {p:'intro', label:'Intro', type:'textarea'},
+    {p:'groups', label:'Skill rows', type:'list',
+      title:(it)=>it.label||'row',
+      newItem:()=>({label:'category', color:'#22d3ee', items:'A · B · C'}),
+      item:[
+        {p:'label', label:'Category', type:'text'},
+        {p:'color', label:'Colour', type:'color'},
+        {p:'items', label:'Items (· separated)', type:'text'}
+      ]},
+    {p:'sphereTags', label:'3D sphere tags (comma or new-line separated)', type:'stringlines'}
+  ]},
+  contact: { title:'Contact', fields:[
+    {p:'eyebrow', label:'Eyebrow', type:'text'},
+    {p:'headingLine1', label:'Heading — line 1', type:'text'},
+    {p:'headingLine2', label:'Heading — line 2', type:'text'},
+    {p:'email', label:'Email', type:'text'},
+    {p:'ctaLabel', label:'Button label', type:'text'},
+    {p:'note', label:'Note after email', type:'text'},
+    {p:'socials', label:'Social links', type:'list',
+      title:(it)=>it.label||'link',
+      newItem:()=>({label:'Label ↗', url:'https://'}),
+      item:[
+        {p:'label', label:'Label', type:'text'},
+        {p:'url', label:'URL', type:'text'}
+      ]}
+  ]}
+};
+
+/* ---------- tiny helpers ---------- */
+const $ = (s,r=document)=>r.querySelector(s);
+const ce = (t,props={})=>Object.assign(document.createElement(t),props);
+function getp(o,p){return p.split('.').reduce((a,k)=>(a==null?a:a[k]),o);}
+function setp(o,p,v){const ks=p.split('.');let a=o;for(let i=0;i<ks.length-1;i++){if(a[ks[i]]==null)a[ks[i]]={};a=a[ks[i]];}a[ks[ks.length-1]]=v;}
+
+let MODEL=null, CURRENT='hero', dirty=false;
+function markDirty(){dirty=true;$('#savebar').style.display='flex';$('#dirty').textContent='unsaved changes';}
+
+function toast(msg,kind){const t=$('#toast');t.textContent=msg;t.className='toast show '+(kind||'');setTimeout(()=>t.className='toast',2200);}
+
+/* ---------- API ---------- */
+async function api(method,url,body){
+  const opt={method,headers:{},credentials:'same-origin'};
+  if(body!==undefined){opt.headers['Content-Type']='application/json';opt.body=JSON.stringify(body);}
+  const res=await fetch(url,opt);
+  let data=null;try{data=await res.json();}catch(_){}
+  if(!res.ok) throw Object.assign(new Error((data&&data.error)||('HTTP '+res.status)),{status:res.status});
+  return data;
+}
+
+/* ---------- auth ---------- */
+$('#loginForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const btn=$('#loginBtn'); btn.disabled=true; $('#loginErr').textContent='';
+  try{
+    await api('POST','/api/login',{username:$('#u').value,password:$('#p').value});
+    await openApp();
+  }catch(err){ $('#loginErr').textContent = err.status===401?'Invalid credentials.':(err.message||'Login failed'); }
+  finally{ btn.disabled=false; }
+});
+$('#logoutBtn').addEventListener('click', async ()=>{ await api('POST','/api/logout'); location.reload(); });
+
+async function openApp(){
+  $('#login').style.display='none';
+  $('#app').style.display='block';
+  MODEL = await api('GET','/api/content');
+  buildTabs(); renderPane(CURRENT);
+}
+
+/* ---------- UI build ---------- */
+function buildTabs(){
+  const tabs=$('#tabs'); tabs.innerHTML='';
+  ROUTES.forEach(k=>{
+    const b=ce('button',{className:'tab'+(k===CURRENT?' active':''),textContent:SCHEMA[k].title});
+    b.onclick=()=>{CURRENT=k;[...tabs.children].forEach(c=>c.classList.remove('active'));b.classList.add('active');renderPane(k);};
+    tabs.appendChild(b);
+  });
+}
+
+function inputFor(field, obj){
+  const wrap=ce('div',{className:'field'});
+  if(field.label) wrap.appendChild(ce('div',{className:'lbl',textContent:field.label}));
+  const val=getp(obj,field.p);
+  let el;
+  if(field.type==='textarea'){ el=ce('textarea'); el.value=val==null?'':val; }
+  else if(field.type==='select'){ el=ce('select'); field.options.forEach(o=>{const op=ce('option',{value:o,textContent:o===''?'(none)':o}); if(o===(val||''))op.selected=true; el.appendChild(op);}); }
+  else if(field.type==='checkbox'){ el=ce('input',{type:'checkbox'}); el.checked=!!val; el.style.width='auto'; }
+  else if(field.type==='color'){
+    const cw=ce('div',{className:'colorwrap'});
+    const cp=ce('input',{type:'color',value:/^#/.test(val||'')?val:'#22d3ee'});
+    const tx=ce('input',{type:'text',value:val==null?'':val});
+    cp.onchange=()=>{tx.value=cp.value;setp(obj,field.p,cp.value);markDirty();};
+    tx.oninput=()=>{setp(obj,field.p,tx.value);if(/^#/.test(tx.value))cp.value=tx.value;markDirty();};
+    cw.appendChild(cp);cw.appendChild(tx);wrap.appendChild(cw);return wrap;
+  }
+  else if(field.type==='stringlines'){
+    el=ce('textarea'); el.value=Array.isArray(val)?val.join(', '):(val||'');
+    el.oninput=()=>{const arr=el.value.split(/[,\n]/).map(s=>s.trim()).filter(Boolean);setp(obj,field.p,arr);markDirty();};
+    wrap.appendChild(el);return wrap;
+  }
+  else { el=ce('input',{type:field.type==='number'?'number':'text'}); el.value=val==null?'':val; }
+
+  el.oninput=el.onchange=()=>{
+    let v= field.type==='checkbox'?el.checked : field.type==='number'?(el.value===''?0:Number(el.value)) : el.value;
+    setp(obj,field.p,v); markDirty();
+  };
+  wrap.appendChild(el); return wrap;
+}
+
+function listFor(field){
+  const box=ce('div');
+  const arr = MODEL[CURRENT][field.p] = MODEL[CURRENT][field.p] || [];
+  arr.forEach((it,idx)=>{
+    const item=ce('div',{className:'item'});
+    const head=ce('div',{className:'ihead'});
+    head.appendChild(ce('div',{className:'t',textContent:(field.title?field.title(it):'item')+' · '+(idx+1)}));
+    const del=ce('button',{className:'btn ghost sm',textContent:'Remove'});
+    del.onclick=()=>{arr.splice(idx,1);markDirty();renderPane(CURRENT);};
+    head.appendChild(del); item.appendChild(head);
+    field.item.forEach(f=> item.appendChild(inputFor(f,it)) );
+    box.appendChild(item);
+  });
+  const add=ce('button',{className:'addbtn',textContent:'+ Add '+ (field.label||'item')});
+  add.onclick=()=>{arr.push(field.newItem());markDirty();renderPane(CURRENT);};
+  box.appendChild(add);
+  return box;
+}
+
+function textlistFor(field){
+  const box=ce('div');
+  const arr = MODEL[CURRENT][field.p] = MODEL[CURRENT][field.p] || [];
+  arr.forEach((val,idx)=>{
+    const item=ce('div',{className:'item'});
+    const head=ce('div',{className:'ihead'});
+    head.appendChild(ce('div',{className:'t',textContent:'#'+(idx+1)}));
+    const del=ce('button',{className:'btn ghost sm',textContent:'Remove'});
+    del.onclick=()=>{arr.splice(idx,1);markDirty();renderPane(CURRENT);};
+    head.appendChild(del); item.appendChild(head);
+    const ta=ce('textarea'); ta.value=val||''; ta.oninput=()=>{arr[idx]=ta.value;markDirty();};
+    item.appendChild(ta); box.appendChild(item);
+  });
+  const add=ce('button',{className:'addbtn',textContent:'+ Add paragraph'});
+  add.onclick=()=>{arr.push(field.newItem());markDirty();renderPane(CURRENT);};
+  box.appendChild(add); return box;
+}
+
+function dsaLivePanel(){
+  const box=ce('div',{className:'item'});
+  box.appendChild(ce('div',{className:'lbl',textContent:'Live stats (fetched from the profiles above)'}));
+  const stats=ce('div',{className:'stats',id:'liveStats'});
+  stats.innerHTML='<span class="hint">Save first, then refresh to pull the latest numbers.</span>';
+  box.appendChild(stats);
+  const btn=ce('button',{className:'btn ghost sm',textContent:'Save & refresh live stats'});
+  btn.onclick=async()=>{
+    btn.disabled=true;btn.textContent='Refreshing…';
+    try{ await save(true); const d=await api('GET','/api/dsa?force=1'); renderLive(d); toast('Live stats refreshed','ok'); }
+    catch(e){ toast('Refresh failed: '+e.message,'bad'); }
+    finally{ btn.disabled=false; btn.textContent='Save & refresh live stats'; }
+  };
+  box.appendChild(btn);
+  box.appendChild(ce('p',{className:'hint',innerHTML:'LeetCode pulls solved counts + contest rating. Codeforces pulls solved count, rating, max rating and the rating-over-time chart. Cached ~30 min.'}));
+  return box;
+}
+function renderLive(d){
+  const s=$('#liveStats'); if(!s) return; s.innerHTML='';
+  const add=(b,l)=>{const x=ce('div',{className:'stat'});x.appendChild(ce('b',{textContent:b}));x.appendChild(ce('span',{textContent:l}));s.appendChild(x);};
+  add(d.totalSolved!=null?d.totalSolved:'—','total solved');
+  add(d.leetcode&&d.leetcode.total!=null?d.leetcode.total:'—','leetcode solved');
+  add(d.leetcode&&d.leetcode.rating!=null?d.leetcode.rating:'—','leetcode rating');
+  add(d.codeforces&&d.codeforces.rating!=null?d.codeforces.rating:'—','cf rating');
+  add(d.codeforces&&d.codeforces.maxRating!=null?d.codeforces.maxRating:'—','cf max');
+  if(d.errors&&(d.errors.leetcode||d.errors.codeforces)){
+    s.appendChild(ce('span',{className:'hint',style:'color:var(--bad)',textContent:'note: '+[d.errors.leetcode&&('LC '+d.errors.leetcode),d.errors.codeforces&&('CF '+d.errors.codeforces)].filter(Boolean).join(' · ')}));
+  }
+}
+
+function renderPane(key){
+  const panes=$('#panes'); panes.innerHTML='';
+  const pane=ce('section',{className:'pane active'});
+  SCHEMA[key].fields.forEach(field=>{
+    if(field.type==='list') pane.appendChild(wrapBlock(field.label, listFor(field)));
+    else if(field.type==='textlist') pane.appendChild(wrapBlock(field.label, textlistFor(field)));
+    else if(field.type==='dsalive') pane.appendChild(dsaLivePanel());
+    else pane.appendChild(inputFor(field, MODEL[key]));
+  });
+  panes.appendChild(pane);
+}
+function wrapBlock(label, node){
+  const w=ce('div',{className:'field'});
+  if(label) w.appendChild(ce('div',{className:'lbl',style:'color:var(--cyan);font-weight:600;margin-bottom:8px',textContent:label}));
+  w.appendChild(node); return w;
+}
+
+/* ---------- save ---------- */
+async function save(silent){
+  const btn=$('#saveBtn'); btn.disabled=true;
+  try{
+    await api('PUT','/api/content',MODEL);
+    dirty=false; $('#savebar').style.display='none';
+    if(!silent) toast('Saved — site updated','ok');
+  }catch(e){ toast('Save failed: '+e.message,'bad'); throw e; }
+  finally{ btn.disabled=false; }
+}
+$('#saveBtn').addEventListener('click',()=>save(false));
+$('#reloadBtn').addEventListener('click', async ()=>{ MODEL=await api('GET','/api/content'); dirty=false; $('#savebar').style.display='none'; renderPane(CURRENT); toast('Changes discarded'); });
+window.addEventListener('beforeunload',(e)=>{ if(dirty){e.preventDefault();e.returnValue='';} });
+
+/* ---------- boot ---------- */
+(async()=>{ try{ await api('GET','/api/me'); await openApp(); }catch(_){ $('#login').style.display='grid'; } })();
+</script>
+</body>
+</html>
