@@ -10,7 +10,7 @@ function setSession(res, payload) {
   res.cookie(COOKIE, sign(payload), {
     httpOnly: true,
     sameSite: 'strict',
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' || process.env.VERCEL === '1',
     maxAge: 7 * 24 * 60 * 60 * 1000,
     path: '/'
   });
